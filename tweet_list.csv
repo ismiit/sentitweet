@@ -1,0 +1,6 @@
+Tweet,Cleaned Tweet,Models,Sentiment,Confidence
+@RichardSSutton estimates 50% probability of Human-Level AI by 2040:,estimate probability human level ai,Basic CNN,Positive,72.41
+,,,,
+@RichardSSutton estimates 50% probability of Human-Level AI by 2040:,estimate probability human level ai,CNN + Bidirectional GRU,Positive,78.24
+,,,,
+@RichardSSutton estimates 50% probability of Human-Level AI by 2040:,estimate probability human level ai,Bidirectional LSTM,Positive,65.87
