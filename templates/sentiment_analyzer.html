@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script>
+	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>
+
+    <title>API tweets</title>
+	<style>
+
+	th,td{
+         text-align: center;}
+    tr:hover {background-color: #D6EEEE;}
+    th{
+	background-color:#000066;}
+	</style>
+
+  </head>
+<body class="bg-nav">
+<!-- code for the navigation header bar-->
+
+<header style="height: 80px" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" style="font-size: 30px; font-weight: bold" href="#">Check API</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+	 <a class="me-3 py-2 text-light text-decoration-none" style="font-size: 20px" href="/home">Home</a>
+      <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/offensive_analyzer">Check Tweet</a>
+	  <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/sentiment_analyzer">Check API</a>
+	  <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/compare_analyzer">Compare</a>
+      <a class="me-3 py-2 text-light text-decoration-none" style="font-size: 20px"  href="/visualize">Visualize</a>
+      <a class="py-2 text-light text-decoration-none" style="font-size: 20px" href="https://www.tweepy.org/">Help</a>
+    </nav>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link text-dark card" style="font-size: 20px; padding: 3px" href="/logout">Sign out</a>
+    </li>
+  </ul>
+</header>
+
+<div class="container">
+      <div class="row">
+          <div class="card mt-100" style="margin-top: 50px">
+            <div class="card-body">
+              <form method="post" action="sentiment_logic">
+                <label> Enter your search keyword </label><br>
+                <input type="text" class="form-control" name="keyword"> <br>
+                <label> Enter your number of tweets to analyze </label><br>
+                <input type="number" class="form-control" name="tweets"><br>
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Search">
+              </form> <br>
+              <p> Need help? <a href="/register"> Click here </a></p>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+<!-- Optional JavaScript; choose one of the two! -->
+<!--output values-->
+<br>
+<br>
+<br>
+
+<div style="text-align: center;">
+<div >
+    {% if polarity %}
+    <h3 style="color: lightblue; text-align: center;font-size:30px; border-radius: 25px; background-color:black">How are people reacting on {{keyword}} by analyzing {{tweets}} Tweets</h3>
+    {% endif %}
+</div>
+</div>
+<div class="card mt-100" style="margin-top: 50px">
+<!--parent div for reports-->
+<div class="row">
+<div>
+    <!--General sentiment report-->
+    <div class="row">
+    <div class="mt-100">
+       
+        <div class="alert alert-primary" role="alert" style="height:70px;width:800px;margin-left:auto;margin-right:auto;">
+            <b>{% if polarity %}</b>
+            <h1 style="text-align: center;font-size:30px;"> The Average Sentiment is <span style="color: #006600">{{htmlpolarity}}</span>  </h1>
+            {%endif%}
+        </div>
+    </div>
+        </div>
+    <!--end of general report-->
+     <!--start of polarity value-->
+
+    <div class="row">
+    <div class="mt-100">
+       
+        <div class="alert alert-primary" role="alert" style="height:70px;width:800px;margin-left:auto;margin-right:auto;">
+            {% if polarity %}
+           <h1 style="text-align: center;font-size:30px"> The sentiment polarity is <span style="color: #ff0000"> {{polarity}} </span> </h1>
+            {%endif%}
+        </div>
+    </div>
+    </div>
+     <!--end of polarity value-->
+</div>
+<!-- end of parent div for reports-->
+    </div>
+	</div>
+<div class="card mt-100" style="margin-top: 50px">
+	<table class="table table-bordered" style="width:800px;margin-left:auto;margin-right:auto;">
+  <tr>
+    <th>SENTIMENT METRIC</th>
+    <th>%age tweets</th> 
+  </tr>
+  <tr>
+    <td>strongly positive</td>
+    <td>{{spositive}}</td>
+    
+  </tr>
+  <tr>
+    <td>positive</td>
+    <td>{{positive}}</td>
+    
+  </tr>
+  <tr>
+    <td>weakly positive</td>
+    <td>{{wpositive}}</td>
+    
+  </tr>
+  <tr>
+    <td>neutral</td>
+    <td>{{neutral}}</td>
+    
+  </tr>
+  <tr>
+    <td>negative</td>
+    <td>{{negative}}</td>
+    
+  </tr><tr>
+    <td>weakly negative</td>
+    <td>{{negative}}</td>
+    
+  </tr><tr>
+    <td>strongly negative</td>
+    <td>{{snegative}}</td>
+    
+  </tr>
+</table>
+</div>
+<div class="card mt-100" style="margin-top: 50px">
+ <div id="container_pie"></div>
+    <script>
+ 
+        var pie = new ej.charts.AccumulationChart({
+            //Initializing Series
+			title: "Sentiment v/s Percentage of tweets",
+			tooltip: { enable: true, header: 'Sentiment', format: '${point.x}:<b> ${point.y}%<b>' },
+            series: [
+                {
+                    dataSource: [
+                        { 'x': 'Strongly Positive', y: {{spositive}} },
+						{ 'x': 'Positive', y: {{positive}} },
+                        { 'x': 'Weakly Positive', y: {{wpositive}} },
+						{ 'x': 'Neutral', y: {{neutral}} },
+                        { 'x': 'Strongly Negative', y: {{snegative}} },
+						{ 'x': 'Negative', y: {{negative}} },
+                        { 'x': 'Weakly Negative', y: {{wnegative}} },
+                    ],
+                    dataLabel: {
+                        visible: true,
+                        position: 'Inside',
+                    },
+                    xName: 'x',
+                    yName: 'y'
+                }
+            ],
+        });
+        pie.appendTo('#container_pie');
+    </script>
+	</div>
+<!--end of report-->
+<div class="container-a">
+<div class="vertical-center">
+<a href="/display_table" class="btn btn-primary btn-block btn-lg" style="background-color: crimson; font-size: 30px; margin-left:auto;margin-right:auto; align:center"> Generate Tweet List</a>
+</div>
+</div>
+<br>
+<br>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+    -->
+</body>
+</html>

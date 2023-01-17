@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CNN</title>
+
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+     <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inconsolata:wght@900&family=Mitr:wght@300;500&family=Montserrat&family=PT+Sans:ital@1&family=Pacifico&family=Rubik+Mono+One&family=Sacramento&family=Space+Mono&family=Teko:wght@500&family=Ubuntu:ital,wght@1,300&display=swap"
+    rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>
+<style>
+h1 {
+	font-family: 'Mitr', sans-serif;
+}
+.column {
+  float: left;
+  width: 25%;
+  padding: 50px;
+  text-align: center;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}
+
+.containerTab {
+  padding: 20px;
+  color: white;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Closable button inside the image */
+.closebtn {
+  float: right;
+  color: white;
+  font-size: 35px;
+  cursor: pointer;
+}
+</style>
+  </head>
+
+
+<body>
+<header style="height: 80px" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" style="font-size: 30px; font-weight: bold" href="#">Visualize Result</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+	 <a class="me-3 py-2 text-light text-decoration-none" style="font-size: 20px" href="/home">Home</a>
+      <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/offensive_analyzer">Check Tweet</a>
+	  <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/sentiment_analyzer">Check API</a>
+	  <a class="me-3 py-2 text-decoration-none text-light" style="font-size: 20px" href="/compare_analyzer">Compare</a>
+      <a class="me-3 py-2 text-light text-decoration-none" style="font-size: 20px" href="/visualize">Visualize</a>
+      <a class="py-2 text-light text-decoration-none" style="font-size: 20px" href="https://www.tweepy.org/">Help</a>
+    </nav>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link text-dark card" style="font-size: 20px; padding: 3px" href="/logout">Sign out</a>
+    </li>
+  </ul>
+</header>
+
+<div class="row">
+    <div class="mt-100">
+        <div class="alert alert-primary" role="alert" style="height:70px;background-color:#000066">
+            <h1 style="text-align: center;font-size:40px;color: white" class="head-a">Basic CNN</h1>
+        </div>
+    </div>
+        </div>
+
+
+<div class="row">
+  <div class="column" onclick="openTab('b1');" style="background:green;">Model</div>
+  <div class="column" onclick="openTab('b2');" style="background:blue;">Accuracy</div>
+  <div class="column" onclick="openTab('b3');" style="background:red;">Loss</div>
+  <div class="column" onclick="openTab('b4');" style="background:pink;">Confusion  Matrix</div>
+</div>
+
+<!-- The expanding grid (hidden by default) -->
+<div id="b1" class="containerTab" style="display:none;background:green">
+  <!-- If you want the ability to close the container, add a close button -->
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+  <div class="card mx-5 px-0 py-0 border">
+  <div class="mt-100" style="padding-top: 100px; text-align: center">
+  
+        <div class="alert alert-primary" role="alert" style="height:80px;background-color:#99ccff">
+            <h4 style="text-align: center;font-size:30px;color:#800000">Model Architecture</h4>
+        </div>
+ 
+        
+         <img src="/static/images/cnn_model.png" >
+
+</div>
+</div>
+</div>
+
+<div id="b2" class="containerTab" style="display:none;background:blue">
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+  <div class="card mx-5 px-0 py-0 border">
+  <div class="mt-100" style="padding-top: 100px; text-align: center">
+  
+        <div class="alert alert-primary" role="alert" style="height:80px;background-color:#99ccff">
+            <h4 style="text-align: center;font-size:30px;color:#800000">Accuracy Plot</h4>
+        </div>
+ 
+        
+        
+		 <img src="/static/images/plot1_cnn.png" >
+
+</div>
+</div>
+</div>
+
+<div id="b3" class="containerTab" style="display:none;background:red">
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+  <div class="card mx-5 px-0 py-0 border">
+  <div class="mt-100" style="padding-top: 100px; text-align: center">
+  
+        <div class="alert alert-primary" role="alert" style="height:80px;background-color:#99ccff">
+            <h4 style="text-align: center;font-size:30px;color:#800000">Loss Plot</h4>
+        </div>
+ 
+        
+  
+		 <img src="/static/images/plot2_cnn.png" >
+
+</div>
+</div>
+</div>
+
+<div id="b4" class="containerTab" style="display:none;background:pink">
+  <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+  <div class="card mx-5 px-0 py-0 border">
+  <div class="mt-100" style="padding-top: 100px; text-align: center">
+  
+        <div class="alert alert-primary" role="alert" style="height:80px;background-color:#99ccff">
+            <h4 style="text-align: center;font-size:30px;color:#800000">Confusion Matrix</h4>
+        </div>
+ 
+        
+         <img src="/static/images/cnn_cf.png" >
+
+</div>
+</div>
+</div>
+<script>
+function openTab(tabName) {
+  var i, x;
+  x = document.getElementsByClassName("containerTab");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  document.getElementById(tabName).style.display = "block";
+}
+</script>
+<small style="color: red"> ** Last generated visual. Press CTRL+ Refresh to reload</small><br>
+
+<a href="visualize" class="btn btn-primary btn-block btn-lg" style="background-color: crimson; font-size: 30px"> Back </a>
+<br>
+<br>
+
+
+</body>
+</html>
